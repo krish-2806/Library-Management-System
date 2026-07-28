@@ -7,7 +7,7 @@ import studentRouter from './routes/studentRoutes.js';
 import bookRouter from './routes/bookRoutes.js';
 
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const app = express();
 
 //MiddleWares
@@ -27,6 +27,6 @@ app.get("/", (req,res)=>{
     res.send("API Working");
 })
 
-app.listen(PORT, ()=>{
-    console.log(`Server Started on http://localhost:${PORT}`);
-})
+app.listen(PORT, () => {
+    console.log(`Server Started on PORT ${PORT}`);
+});
