@@ -4,7 +4,7 @@ const AuthContext = createContext(null);
 
 const SESSION_KEY = 'library-auth-session';
 const TOKEN_KEY = 'library-auth-token';
-const API_BASE_URL = 'http://localhost:5000/api/auth';
+const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api/auth`;
 
 const defaultAccounts = [];
 
@@ -209,8 +209,7 @@ export const AuthProvider = ({ children }) => {
             console.error("AuthContext: No fallback available");
             return {
                 ok: false,
-                error:
-                    "Server connection failed. Please ensure the backend is running on http://localhost:5000",
+                error: "Server connection failed. Please try again later.",
             };
         }
     };
