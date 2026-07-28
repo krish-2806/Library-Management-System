@@ -233,7 +233,7 @@ export async function registerAdmin(req,res){
         }
         if(await User.findOne({email})){
             return res.status(400).json({
-                message: "User already exists with this email"
+                message: "Admin already exists with this email"
             });
         }
         const hashedpassword = await bcrypt.hash(password, 10);

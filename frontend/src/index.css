@@ -1,1 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
 @import "tailwindcss";
+
+@theme {
+  --color-library-ink: #14231d;
+  --color-library-panel: #183127;
+  --color-library-panel-soft: #234133;
+  --color-library-panel-deep: #2b4a3a;
+  --color-library-gold: #c9a55a;
+  --color-library-gold-deep: #db8d30;
+  --color-library-gold-soft: #f0dfb4;
+  --color-library-paper: #f6f0e3;
+  --color-library-paper-deep: #e8decb;
+  --color-library-paper-strong: #f7f2e9;
+  --color-library-paper-warm: #efe4d3;
+  --color-library-mist: #edf4ef;
+  --color-library-danger: #a54943;
+  --color-library-success: #2f6a54;
+  --color-library-success-soft: #3d8366;
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "Manrope", sans-serif;
+  --font-numeric: "Space Grotesk", sans-serif;
+  --shadow-library: 0 25px 60px rgba(20, 35, 29, 0.18);
+  --shadow-library-soft: 0 18px 40px rgba(20, 35, 29, 0.08);
+  --shadow-library-medium: 0 20px 44px rgba(20, 35, 29, 0.2);
+  --shadow-library-strong: 0 24px 60px rgba(20, 35, 29, 0.22);
+  --shadow-library-panel: 0 20px 42px rgba(20, 35, 29, 0.08);
+  --shadow-library-card: 0 16px 36px rgba(20, 35, 29, 0.08);
+  --shadow-library-chip: 0 10px 24px rgba(20, 35, 29, 0.14);
+}
+
+:root {
+  color: var(--color-library-ink);
+  background:
+    radial-gradient(circle at top left, rgba(201, 165, 90, 0.18), transparent 32%),
+    linear-gradient(180deg, #f7f2e9 0%, #efe4d3 100%);
+  font-family: var(--font-body);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(201, 165, 90, 0.18), transparent 32%),
+    linear-gradient(180deg, #f7f2e9 0%, #efe4d3 100%);
+  color: var(--color-library-ink);
+  font-family: var(--font-body);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+  overflow-x: hidden;
+}

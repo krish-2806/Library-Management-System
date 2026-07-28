@@ -26,7 +26,7 @@ const mapUserToFrontend = (user) => {
     };
 };// fetch all these details coming from the server side.
 
-export const AuthProvider = ({ Children }) => {
+export const AuthProvider = ({ children }) => {
     const [accounts, setAccounts] = useState(defaultAccounts);
     const [currentUser, setCurrentUser] = useState(null);
     const [ready, setReady] = useState(false);
@@ -393,7 +393,7 @@ export const AuthProvider = ({ Children }) => {
             accountExists,
             updateProfile,
         }}>
-            {Children}
+            {children}
         </AuthContext.Provider>
     )
 };

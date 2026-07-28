@@ -9,7 +9,9 @@ import {
     UserRound,
     ChevronRight,
     Menu,
-    X
+    X,
+    UserPlus,
+    LogIn
 } from "lucide-react";
 
 const iconMap = {
@@ -42,7 +44,7 @@ const Sidebar = ({
     <div className={`${s.mobileOverlay} ${open ? s.mobileOverlayOpen : s.mobileOverlayClosed}`} onClick={()=> setOpen(false)} />
 
     <aside className={`${s.sidebar} ${open ? s.sidebarOpen : s.sidebarClosed}`}>
-        <div className={ s.sidebarheader}>
+        <div className={ s.sidebarHeader}>
             <div className='min-w-0 pr-3'>
                 <div className={s.logoWrapper}>
                     {logoSrc ? (
@@ -54,7 +56,7 @@ const Sidebar = ({
                     <h2 className={s.title}>{title}</h2>
                     <p className={s.subtitle}>{subtitle}</p>
                     {badge && (
-                        <span className={`${s.badgeBase}`}>{badge}</span>
+                        <span className={`${s.badgeBase} ${badgeStyles}`}>{badge}</span>
                     )}
             </div>
                 <button onClick={()=> setOpen(false)} type='button' className={s.closeButton}><X size={18}/></button>
@@ -82,7 +84,34 @@ const Sidebar = ({
                     )
                 })}
             </nav>
-            <div className={s.footer}></div>
+            <div className={s.footer}>
+                { footerItems.map((item) => {
+                    const Icon = item.icon === "signup" ? UserPlus : LogIn;
+
+                    if(item.action) {
+                        return (
+                            <button key={item.label} type="button" onClick={item.action}
+                                className={`${s.footerButton} ${item.kind === "primary" ? s.footerButtonPrimary : s.footerButtonSecondary}`}>
+                                    <span className={s.footerIconWrapper}>
+                                        <Icon size={16} />
+                                        {item.label}
+                                    </span>
+                                    <ChevronRight size={16} />
+                            </button>
+                        );
+                    }
+                    return (
+                        <Link key={item.label} to={item.href}
+                                className={`${s.footerLink} ${item.kind === "primary" ? s.footerButtonPrimary : s.footerButtonSecondary}`}>
+                                    <span className={s.footerIconWrapper}>
+                                        <Icon size={16} />
+                                        {item.label}
+                                    </span>
+                                    <ChevronRight size={16} />
+                        </Link>
+                    )
+                })}
+            </div>
     </aside>
     </>
   );
