@@ -214,7 +214,7 @@ export async function getUsers(req,res){
     try {
         const users = await User.find({role: "user", isVerified: true, isProfileComplete: true }).select("-password");
         res.status(200).json({
-            success: true,uers
+            success: true,users
         })
     } catch (error) {
         console.error("Error fetching students:", error);
