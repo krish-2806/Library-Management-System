@@ -33,19 +33,25 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   requireTLS: true,
+  family: 4,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-  family: 4, // Force IPv4
 });
 
 const sendOTP = async (email, otp) => {
+  await transporter.verify();
+  console.log("SMTP Connected");
+
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
     to: email,
     subject: "Your One-Time Password from Shelfwise Library",
-    html: `<h2>Your OTP is ${otp}</h2>`,
+    html: `
+      <h2>Your OTP is: ${otp}</h2>
+      <p>This OTP is valid for 5 minutes.</p>
+    `,
   });
 };
 
