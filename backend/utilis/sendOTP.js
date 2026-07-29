@@ -26,33 +26,27 @@
 // export default sendOTP;
 
 
-import { createTransport } from "nodemailer";
+import nodemailer from "nodemailer";
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  requireTLS: true,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+  family: 4, // Force IPv4
+});
 
 const sendOTP = async (email, otp) => {
-  console.log("EMAIL_USER:", process.env.EMAIL_USER);
-  console.log("EMAIL_PASS Exists:", !!process.env.EMAIL_PASS);
-
-  const transporter = createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
-  await transporter.verify();
-  console.log("SMTP Connected Successfully");
-
-  const info = await transporter.sendMail({
+  await transporter.sendMail({
     from: process.env.EMAIL_USER,
     to: email,
     subject: "Your One-Time Password from Shelfwise Library",
-    html: `<h2>Your OTP is: ${otp}</h2>`,
+    html: `<h2>Your OTP is ${otp}</h2>`,
   });
-
-  console.log("Email sent:", info.messageId);
 };
 
 export default sendOTP;
