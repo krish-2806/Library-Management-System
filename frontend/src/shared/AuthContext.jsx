@@ -368,13 +368,21 @@ export const AuthProvider = ({ children }) => {
                 return { ok: true, user: mappedUser };
             }
             return { ok: false, error: "Failed to update profile details" };
-        } catch (error) {
-            console.error("Update Profile API error:", error);
-            return {
-                ok: false,
-                error: "Failed to connect to authentication server.",
-            };
-        }
+        // } catch (error) {
+        //     console.error("Update Profile API error:", error);
+        //     return {
+        //         ok: false,
+        //         error: "Failed to connect to authentication server.",
+        //     };
+        // }
+        }catch (error) {
+    console.error("Register API error:", error);
+
+    return {
+        ok: false,
+        error: error.message,
+    };
+}
     }; // to update the profile
 
     return (
