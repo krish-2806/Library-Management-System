@@ -29,19 +29,12 @@ export async function registerUser(req, res){
         //to send otp
         try{
             await sendOTP(email, otp);
-        // }catch(emailError){
-        //     console.error("Error sending OTP email:", emailError)
-        //     return res.status(500).json({
-        //         message: "Failed to send OTP email. Please try again."
-        //     })
-        // }
         }catch(emailError){
-    console.error("FULL EMAIL ERROR:", emailError);
-
-    return res.status(500).json({
-        message: emailError.message
-    });
-}
+            console.error("Error sending OTP email:", emailError)
+            return res.status(500).json({
+                message: "Failed to send OTP email. Please try again."
+            })
+        }
         const hashedpassword = await bcrypt.hash(password, 10);
         const otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
         const studentId = `ST-${uuidv4().slice(0,8).toUpperCase()}`;
