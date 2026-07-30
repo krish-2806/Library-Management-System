@@ -4,8 +4,8 @@ const AuthContext = createContext(null);
 
 const SESSION_KEY = 'library-auth-session';
 const TOKEN_KEY = 'library-auth-token';
-// const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api/auth`;
-const API_BASE_URL = "/api/auth";
+const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api/auth`;
+// const API_BASE_URL = "/api/auth";
 
 const defaultAccounts = [];
 
