@@ -14,7 +14,7 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://shelfwise-library-seven.vercel.app",
+      "https://shelfwise-library-silk.vercel.app",
       "http://localhost:5173",
     ],
     credentials: true,
