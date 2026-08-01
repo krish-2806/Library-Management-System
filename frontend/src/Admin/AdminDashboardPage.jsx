@@ -61,7 +61,7 @@ const AdminDashboardPage = () => {
                 <Icon size={20} />
               </span>
               <p className={s.statLabel}>{item.label}</p>
-              <p className={s.statValue}>{item.statValue}</p>
+              <p className={s.statValue}>{item.value}</p>
               <p className={s.statNote}>{item.note}</p>
             </article>
           )

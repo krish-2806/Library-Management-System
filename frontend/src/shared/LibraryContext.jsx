@@ -914,12 +914,8 @@ export const LibraryProvider = ({ children }) => {
     const activeBooks = bookViews.filter((book) => book.activeLoan);
     const overdueBooks = activeBooks.filter((book) => book.status === "Overdue");
 
-    const studentAccounts = accounts.filter(
-  (account) =>
-    account.role === "user" &&
-    account.rollNumber &&
-    account.rollNumber.trim() !== ""
-);
+    const studentAccounts = accounts.filter((account) => account.role === "user");
+    // console.log("Student Accounts:", studentAccounts);
 
     const allRecords = manualIssues.map((issue) => createManualRecord(issue, fineSettings));
 
@@ -933,19 +929,38 @@ export const LibraryProvider = ({ children }) => {
 
         return {
             ...account,
+
+            studentId: account.studentId,
+            department: account.department,
+            stream: account.stream,
+            academicYear: account.academicYear,
+            semester: account.semester,
+            rollNumber: account.rollNumber,
+            phone: account.phone,
+
             borrowedCount: activeRecords.length,
             totalIssued: records.length,
-            totalFine: activeRecords.reduce((sum, record) => sum + record.liveFine, 0),
+            totalFine: activeRecords.reduce(
+                (sum, record) => sum + record.liveFine,
+                0
+            ),
             totalClearedFine: records.reduce(
                 (sum, record) => sum + (Number(record.clearedFineAmount ?? 0) || 0),
                 0,
             ),
-            fineClearedCount: activeRecords.filter((record) => record.fineCleared).length,
-            status: overdueRecords.length ? "Overdue" : activeRecords.length ? "Borrowing" : "Clear",
+            fineClearedCount: activeRecords.filter(
+                (record) => record.fineCleared
+            ).length,
+            status: overdueRecords.length
+                ? "Overdue"
+                : activeRecords.length
+                    ? "Borrowing"
+                    : "Clear",
             activeBooks: activeRecords,
             history: records,
         };
     });
+    console.log(studentSummaries);
 
     const currentUserSummary = currentUser
         ? studentSummaries.find((student) => student.email === currentUser.email) ?? (() => {
