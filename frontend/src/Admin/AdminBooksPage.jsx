@@ -3,6 +3,8 @@ import { adminBooksPageStyles as s } from '../assets/dummyStyles';
 import { useLibrary } from "../shared/LibraryContext";
 import { FilePlus2, Search, Trash2 } from "lucide-react";
 
+const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
+
 const getTodayIso = () => {
   const date = new Date();
   const year = date.getFullYear();
@@ -48,7 +50,7 @@ const AdminBooksPage = () => {
       try {
         setSearchError("");
         const response = await fetch(
-          `http://localhost:5000/api/students/search-by-roll?roll=${encodeURIComponent(
+          `${API_BASE_URL}/students/search-by-roll?roll=${encodeURIComponent(
             issueForm.rollNumber.trim(),
           )}`,
           {
@@ -250,8 +252,8 @@ const AdminBooksPage = () => {
                       type="button"
                       onClick={() => selectStudent(student)}
                       className={`${s.studentButtonBase} ${selectedStudent?.email === student.email
-                          ? s.studentButtonSelected
-                          : s.studentButtonUnselected
+                        ? s.studentButtonSelected
+                        : s.studentButtonUnselected
                         }`}
                     >
                       <span>{student.name}</span>
