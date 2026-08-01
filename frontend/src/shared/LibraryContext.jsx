@@ -914,7 +914,12 @@ export const LibraryProvider = ({ children }) => {
     const activeBooks = bookViews.filter((book) => book.activeLoan);
     const overdueBooks = activeBooks.filter((book) => book.status === "Overdue");
 
-    const studentAccounts = accounts.filter((account) => account.role === "user");
+    const studentAccounts = accounts.filter(
+  (account) =>
+    account.role === "user" &&
+    account.rollNumber &&
+    account.rollNumber.trim() !== ""
+);
 
     const allRecords = manualIssues.map((issue) => createManualRecord(issue, fineSettings));
 
