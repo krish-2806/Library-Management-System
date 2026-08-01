@@ -35,6 +35,8 @@ export async function issueManualBooks(req, res) {
         if (!Array.isArray(books) || books.length === 0) {
             return res.status(400).json({ message: "No book were entered" })
         }
+        console.log("Student Details:", studentDetails);
+        console.log("Roll Number:", studentDetails.rollNumber);
         const student = await User.findOne({ rollNo: studentDetails.rollNumber });
         if (!student) return res.status(404).json({
             success: false,
@@ -70,7 +72,7 @@ export async function issueManualBooks(req, res) {
             studentId: student.rollNo || `ST-${student._id.toString().slice(-4)}`
         })));
 
-        re.status(201).json({
+        res.status(201).json({
             success: true,
             message: `${createdIssues.length} manual books issued successfully!`,
             count: createdIssues.length,
@@ -86,13 +88,13 @@ export async function issueManualBooks(req, res) {
 
 //2. Get all manual issues (admin)
 export async function getIssues(req, res) {
-    try{
-        const issues = await Issue.find({}).sort({ createdAt: -1});
+    try {
+        const issues = await Issue.find({}).sort({ createdAt: -1 });
         res.status(200).json({
             success: true,
             issues
         })
-    }catch(error){
+    } catch (error) {
         console.error("Error fetching manual issues:", error);
         res.status(500).json({
             message: "Error fetching issues", error: error.message
@@ -101,12 +103,12 @@ export async function getIssues(req, res) {
 }
 
 //3. Get manual issues for logged-in student
-export async function getStudentIssues(req, res){
+export async function getStudentIssues(req, res) {
     try {
         const issues = await Issue.find({
             userEmail: req.user.email.toLowerCase().trim()
         }).sort({ createAt: -1 });
-        res.status(200).json({ success:true, issues});
+        res.status(200).json({ success: true, issues });
     } catch (error) {
         console.error("Error fetching student issues:", error);
         res.status(500).json({
@@ -117,10 +119,10 @@ export async function getStudentIssues(req, res){
 
 //4. Return issued manual book
 export async function returnBook(req, res) {
-    try{
+    try {
         const issue = await Issue.findById(req.params.id);
-        if(!issue) return res.status(404).json({ message: "Issue record not found "});
-        if(issue.returnedOn) return res.status(400).json({
+        if (!issue) return res.status(404).json({ message: "Issue record not found " });
+        if (issue.returnedOn) return res.status(400).json({
             message: "Book already returned"
         });
         issue.returnedOn = getLocalIsoDate();
@@ -130,7 +132,7 @@ export async function returnBook(req, res) {
             message: "Book returned successfully!",
             issue
         })
-    }catch(error){
+    } catch (error) {
         console.error("Error returning manual book:", error);
         res.status(500).json({
             message: "Error returning manual book", error: error.message
@@ -142,15 +144,15 @@ export async function returnBook(req, res) {
 export async function applyFine(req, res) {
     try {
         const fineAmount = Number(req.body.amount);
-        if(Number.isNaN(fineAmount)) return res.status(400).json({
+        if (Number.isNaN(fineAmount)) return res.status(400).json({
             message: "Invalid fine amount"
         });
 
         const issue = await Issue.findById(req.params.id);
-        if(!issue) return res.status(404).json({ message: "Issue record not found "});
+        if (!issue) return res.status(404).json({ message: "Issue record not found " });
 
         issue.manualFine = fineAmount;
-        if(fineAmount > 0) issue.fineCleared = false;
+        if (fineAmount > 0) issue.fineCleared = false;
         await issue.save();
 
         res.status(200).json({
@@ -158,7 +160,7 @@ export async function applyFine(req, res) {
             message: "Manual fine applied successfully!",
             issue
         });
-    }catch(error){
+    } catch (error) {
         console.error("Error applying manual fine:", error);
         res.status(500).json({
             message: "Error applying manual fine", error: error.message
@@ -168,14 +170,14 @@ export async function applyFine(req, res) {
 
 //6. Clear manual fine
 export async function clearFine(req, res) {
-    try{
+    try {
         const issue = await Issue.findById(req.params.id);
-        if(!issue) return res.status(404).json({ message: "Issue record not found "});
+        if (!issue) return res.status(404).json({ message: "Issue record not found " });
 
         Object.assign(issue, {
             manualFine: 0,
             fineCleared: true,
-            clearedFineAmount: calculateFine( issue, issue.fineRate, issue.fineInterval)
+            clearedFineAmount: calculateFine(issue, issue.fineRate, issue.fineInterval)
         });
         await issue.save();
 
@@ -184,7 +186,7 @@ export async function clearFine(req, res) {
             message: "Fine cleared successfully!",
             issue
         });
-    }catch(error){
+    } catch (error) {
         console.error("Error clearing manual fine:", error);
         res.status(500).json({
             message: "Error clearing manual fine", error: error.message
@@ -193,14 +195,14 @@ export async function clearFine(req, res) {
 }
 
 //7. Get Active fine settings
-export async function getFineSettings(req, res){
-    try{
+export async function getFineSettings(req, res) {
+    try {
         const settings = (await fineSetting.findOne({}) || (await fineSetting.create({ amount: 10, interval: "day" })))
         res.status(200).json({
             success: true,
             settings
         })
-    }catch(error){
+    } catch (error) {
         console.error("Error fetching fine settings:", error);
         res.status(500).json({
             message: "Error fetching fine settings", error: error.message
@@ -209,16 +211,16 @@ export async function getFineSettings(req, res){
 }
 
 //8. To update fine settings
-export async function updateFineSettings(req, res){
-    try{
+export async function updateFineSettings(req, res) {
+    try {
         const { amount, interval } = req.body;
         let settings = await fineSetting.findOne({});
 
-        if(settings){
-            if(amount !== undefined ) settings.amount = Number(amount);
-            if(interval !== undefined ) settings.interval = interval;
+        if (settings) {
+            if (amount !== undefined) settings.amount = Number(amount);
+            if (interval !== undefined) settings.interval = interval;
             await settings.save();
-        }else{
+        } else {
             settings = await fineSetting.create({
                 amount: Number(amount) || 10,
                 interval: interval || "day"
@@ -229,7 +231,7 @@ export async function updateFineSettings(req, res){
             message: "Fine settings updated successfully!",
             settings
         });
-    }catch(error){
+    } catch (error) {
         console.error("Error updating fine settings:", error);
         res.status(500).json({
             message: "Error updating fine settings", error: error.message
